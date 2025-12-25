@@ -23,7 +23,7 @@ pipeline {
                 script{
                     def packageJSON = readJSON file: 'package.json'
                     appVersion = packageJSON.version
-                    echo "app version: ${appVersion}"
+                    def "app version: ${appVersion}"
                 }
             }
         }
@@ -73,7 +73,7 @@ pipeline {
                     withAWS(region:'us-east-1',credentials:'aws-cred') {
                         sh """
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-                            docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                            docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
                             docker images
                             docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
                         """
