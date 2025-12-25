@@ -27,24 +27,24 @@ pipeline {
                 }
             }
         }
-        // stage('Install Dependencies') {
-        //     steps {
-        //         script{
-        //             sh """
-        //                 npm install
-        //             """
-        //         }
-        //     }
-        // }
-        // stage('Unit Test') {
-        //     steps {
-        //         script{
-        //             sh """
-        //                 npm test
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                script{
+                    sh """
+                        npm install
+                    """
+                }
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                script{
+                    sh """
+                        npm test
+                    """
+                }
+            }
+        }
         //Here you need to select scanner tool and send the analysis to server
         // stage('Sonar Scan'){
         //     environment {
