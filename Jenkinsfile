@@ -46,36 +46,36 @@ pipeline {
             }
         }
 
-        stage('Sonar Scan') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonar-scanner'
-                    withSonarQubeEnv('sonar-server') {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=catalogue \
-                            -Dsonar.projectName=catalogue \
-                            -Dsonar.sources=. \
-                            -Dsonar.language=js
-                        """
-                    }
-                }
-            }
-        }
-
-        // Here you need to select scanner tool and send the analysis to server
-        // stage('Sonar Scan'){
-        //     environment {
-        //         def scannerHome = tool 'sonar-11.0'
-        //     }
+        // stage('Sonar Scan') {
         //     steps {
-        //         script{
+        //         script {
+        //             def scannerHome = tool 'sonar-scanner'
         //             withSonarQubeEnv('sonar-server') {
-        //                 sh  "${scannerHome}/bin/sonar-scanner"
+        //                 sh """
+        //                     ${scannerHome}/bin/sonar-scanner \
+        //                     -Dsonar.projectKey=catalogue \
+        //                     -Dsonar.projectName=catalogue \
+        //                     -Dsonar.sources=. \
+        //                     -Dsonar.language=js
+        //                 """
         //             }
         //         }
         //     }
         // }
+
+        Here you need to select scanner tool and send the analysis to server
+        stage('Sonar Scan'){
+            environment {
+                def scannerHome = tool 'sonar-scanner'
+            }
+            steps {
+                script{
+                    withSonarQubeEnv('sonar-server') {
+                        sh  "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
         // stage('Quality Gate') {
         //     steps {
         //         timeout(time: 1, unit: 'HOURS') {

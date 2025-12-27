@@ -39,9 +39,10 @@ yum install wget unzip -y
 
 ## Download and Extract SonarQube
 cd /opt
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.6.1.59531.zip
-unzip sonarqube-9.6.1.59531.zip
-mv sonarqube-9.6.1.59531 sonarqube
+# Download the latest SonarQube 2025.4.4 LTA
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-2025.4.4.zip
+unzip sonarqube-2025.4.4.zip
+mv sonarqube-2025.4.4 sonarqube
 
 ## Create a Dedicated User
 useradd sonar
