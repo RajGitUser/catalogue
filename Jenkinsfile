@@ -45,19 +45,34 @@ pipeline {
                 }
             }
         }
-        // Here you need to select scanner tool and send the analysis to server
-        stage('Sonar Scan'){
-            environment {
-                def scannerHome = tool 'sonar-11.0'
-            }
+
+        stage('Sonar Scan') {
             steps {
-                script{
-                    withSonarQubeEnv('sonar-server') {
-                        sh  "${scannerHome}/bin/sonar-scanner"
-                    }
+                withSonarQubeEnv('sonar-server') {
+                    sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=${COMPONENT} \
+                        -Dsonar.projectName=${COMPONENT} \
+                        -Dsonar.sources=. \
+                        -Dsonar.language=js
+                    """
                 }
             }
         }
+
+        // Here you need to select scanner tool and send the analysis to server
+        // stage('Sonar Scan'){
+        //     environment {
+        //         def scannerHome = tool 'sonar-11.0'
+        //     }
+        //     steps {
+        //         script{
+        //             withSonarQubeEnv('sonar-server') {
+        //                 sh  "${scannerHome}/bin/sonar-scanner"
+        //             }
+        //         }
+        //     }
+        // }
         // stage('Quality Gate') {
         //     steps {
         //         timeout(time: 1, unit: 'HOURS') {
