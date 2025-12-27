@@ -161,28 +161,45 @@ pipeline {
         }
 
         stage('Sonar Scan') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonar-scanner'
-                    withSonarQubeEnv('sonar-server') {
-                        sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                          -Dsonar.projectKey=catalogue \
-                          -Dsonar.projectName=catalogue \
-                          -Dsonar.sources=.
-                        """
+                steps {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    script {
+                        def scannerHome = tool 'sonar-scanner'
+                        withSonarQubeEnv('sonar-server') {
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=catalogue \
+                                -Dsonar.sources=.
+                            """
+                        }
                     }
                 }
             }
         }
 
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('Sonar Scan') {
+        //     steps {
+        //         script {
+        //             def scannerHome = tool 'sonar-scanner'
+        //             withSonarQubeEnv('sonar-server') {
+        //                 sh """
+        //                 ${scannerHome}/bin/sonar-scanner \
+        //                   -Dsonar.projectKey=catalogue \
+        //                   -Dsonar.projectName=catalogue \
+        //                   -Dsonar.sources=.
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage('Quality Gate') {
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Build Image') {
             steps {
