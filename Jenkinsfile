@@ -48,14 +48,17 @@ pipeline {
 
         stage('Sonar Scan') {
             steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh """
-                        sonar-scanner \
-                        -Dsonar.projectKey=${COMPONENT} \
-                        -Dsonar.projectName=${COMPONENT} \
-                        -Dsonar.sources=. \
-                        -Dsonar.language=js
-                    """
+                script {
+                    def scannerHome = tool 'sonar-scanner'
+                    withSonarQubeEnv('sonar-server') {
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=catalogue \
+                            -Dsonar.projectName=catalogue \
+                            -Dsonar.sources=. \
+                            -Dsonar.language=js
+                        """
+                    }
                 }
             }
         }
